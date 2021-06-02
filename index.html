@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body> 
-  <h1>hola</h1>
-    <input type="file" id="fileInput">
-  <script>
-    const doc =document.getElementById("fileInput")
-    console.log(doc)
-  </script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<h1>Selecciona un JSON válido</h1>
+		<input type="file" id="fileInput" />
+		<script>
+			const upload= document.getElementById("fileInput");
+			if (upload) {
+				upload.addEventListener("change", function () {
+					// Make sure a file was selected
+					if (upload.files.length > 0) {
+						var reader = new FileReader(); // File reader to read the file
+
+						// This event listener will happen when the reader has read the file
+						reader.addEventListener("load", function () {
+							var result = JSON.parse(reader.result); // Parse the result into an object
+
+							console.log(result);
+
+						});
+
+						reader.readAsText(upload.files[0]); // Read the uploaded file
+					}
+				});
+			}
+		</script>
+	</body>
 </html>
