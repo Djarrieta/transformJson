@@ -14,45 +14,80 @@
 
 		<script type="text/javascript">
 			let outputText = "";
-			outputText = outputText + "IDCLIENTE" + "\t";
-			outputText = outputText + "flu_numsolicitud" + "\t";
-			outputText = outputText + "PrimerApellido" + "\t";
-			outputText = outputText + "BaseSalud " + "\t";
-
-			outputText = outputText + "CodigoTipo_Aportante " + "\t";
-			outputText = outputText + "NumDocumentoAportante " + "\t";
-			outputText = outputText + "DescTipo_Cotizante " + "\t";
-			outputText = outputText + "CodigoTipo " + "\t";
-			outputText = outputText + "RazonSocialAportante " + "\t";
-			outputText = outputText + "PrimerApellidoSOI " + "\t";
-			outputText = outputText + "Novedades" + "\t";
-			outputText = outputText + "PeriodoCotizacion " + "\t";
-			outputText = outputText + "BaseCajaCompensa " + "\t";
-			outputText = outputText + "CodigoTipo_Cotizante " + "\t";
-			outputText = outputText + "CodigoTipo_Cotizante " + "\t";
-
-			outputText = outputText + "BasePension " + "\t";
-			outputText = outputText + "DescTipo " + "\t";
-			outputText = outputText + "SalarioBasico" + "\t";
-			outputText = outputText + "DescTipo_Aportante" + "\t";
-			outputText = outputText + "DescClase" + "\t";
-			outputText = outputText + "CodClase" + "\t";
-			outputText = outputText + "CC4U1029TOTALPAGADO" + "\t";
-			outputText = outputText + "CC4U1027DESCTIPO" + "\t";
-			outputText = outputText + "CC4U1029PERCOTIZSALUD" + "\t";
-			outputText = outputText + "CC4U1029DESCTIPOPLANTILLA" + "\t";
-			outputText = outputText + "CC4U1027NUMDOCUMENTO" + "\t";
-			outputText = outputText + "CC4U1027DESCCLASE" + "\t";
-			outputText = outputText + "CC4U1029CANTIDADCOTIZ" + "\t";
-			outputText = outputText + "CC4U1027TIPODOCUMENTO" + "\t";
-			outputText = outputText + "CC4U1027RAZONSOCIAL" + "\t";
-			outputText = outputText + "CC4U1027CODTIPO" + "\t";
-			outputText = outputText + "CC4U1029TIPOPLANTILLA" + "\t";
-			outputText = outputText + "CC4U1027DESCACTECONOMICA" + "\t";
-			outputText = outputText + "CC4U1027CODCLASE" + "\t";
-			outputText = outputText + "CC4U1029PERCOTIZOTROSUBSIS" + "\t";
-			outputText = outputText + "CC4U1027ACTIVECONOMICA" + "\t";
-			outputText = outputText + "\n";
+			outputText =
+				outputText +
+				"IDCLIENTE" +
+				"\t" +
+				"flu_numsolicitud" +
+				"\t" +
+				"PrimerApellido" +
+				"\t" +
+				"BaseSalud " +
+				"\t" +
+				"CodigoTipo_Aportante " +
+				"\t" +
+				"NumDocumentoAportante " +
+				"\t" +
+				"DescTipo_Cotizante " +
+				"\t" +
+				"CodigoTipo " +
+				"\t" +
+				"RazonSocialAportante " +
+				"\t" +
+				"PrimerApellidoSOI " +
+				"\t" +
+				"Novedades" +
+				"\t" +
+				"PeriodoCotizacion " +
+				"\t" +
+				"BaseCajaCompensa " +
+				"\t" +
+				"CodigoTipo_Cotizante " +
+				"\t" +
+				"CodigoTipo_Cotizante " +
+				"\t" +
+				"BasePension " +
+				"\t" +
+				"DescTipo " +
+				"\t" +
+				"SalarioBasico" +
+				"\t" +
+				"DescTipo_Aportante" +
+				"\t" +
+				"DescClase" +
+				"\t" +
+				"CodClase" +
+				"\t" +
+				"CC4U1029TOTALPAGADO" +
+				"\t" +
+				"CC4U1027DESCTIPO" +
+				"\t" +
+				"CC4U1029PERCOTIZSALUD" +
+				"\t" +
+				"CC4U1029DESCTIPOPLANTILLA" +
+				"\t" +
+				"CC4U1027NUMDOCUMENTO" +
+				"\t" +
+				"CC4U1027DESCCLASE" +
+				"\t" +
+				"CC4U1029CANTIDADCOTIZ" +
+				"\t" +
+				"CC4U1027TIPODOCUMENTO" +
+				"\t" +
+				"CC4U1027RAZONSOCIAL" +
+				"\t" +
+				"CC4U1027CODTIPO" +
+				"\t" +
+				"CC4U1029TIPOPLANTILLA" +
+				"\t" +
+				"CC4U1027DESCACTECONOMICA" +
+				"\t" +
+				"CC4U1027CODCLASE" +
+				"\t" +
+				"CC4U1029PERCOTIZOTROSUBSIS" +
+				"\t" +
+				"CC4U1027ACTIVECONOMICA" +
+				"\n";
 
 			document
 				.getElementById("inputfile")
@@ -63,7 +98,7 @@
 						const aportantes = transactionInfo.aportantes;
 						aportantes.forEach((aportanteInfo) => {
 							const pagos = aportanteInfo.resultado_pagos;
-							pagos.forEach((pagosInfo) => {
+							pagos.forEach((pagoInfo) => {
 								outputText =
 									outputText +
 									transactionInfo.numero_identificacion_persona_natural +
@@ -101,7 +136,7 @@
 									outputText +
 									aportanteInfo.tiene_novedad_ingreso_actualmente +
 									"\t"; //Novedades
-								outputText = outputText + pagosInfo.mes_periodo_validado + "\t"; //PeriodoCotizacion
+								outputText = outputText + pagoInfo.mes_periodo_validado + "\t"; //PeriodoCotizacion
 								outputText = outputText + "NULL" + "\t"; //BaseCajaCompensa
 								outputText =
 									outputText +
@@ -112,22 +147,28 @@
 									aportanteInfo.tipo_cotizante_persona_natural +
 									"\t"; //CodigoTipo_Cotizante
 
-								outputText = outputText + pagosInfo.promedio_ingresos + "\t"; //BasePension
+								outputText = outputText + aportanteInfo.promedio_ingresos + "\t"; //BasePension
 								outputText = outputText + "NULL" + "\t"; //DescTipo
-								outputText = outputText + pagosInfo.mes_periodo_validado + "\t"; //SalarioBasico
+								outputText = outputText + pagoInfo.mes_periodo_validado + "\t"; //SalarioBasico
 								outputText = outputText + "NULL" + "\t"; //DescTipo_Aportante
 								outputText = outputText + "NULL" + "\t"; //DescClase
 								outputText = outputText + "NULL" + "\t"; //CodClase
-								outputText = outputText + pagosInfo.ingresos + "\t"; //CC4U1029TOTALPAGADO
+                if(pagoInfo.ingresos){
+                  outputText = outputText + pagoInfo.ingresos  + "\t"; //CC4U1029TOTALPAGADO
+                }else{
+                  outputText = outputText + "0"  + "\t"; //CC4U1029TOTALPAGADO
+                }
+
+								
 								outputText = outputText + "NULL" + "\t"; //CC4U1027DESCTIPO
-								outputText = outputText + pagosInfo.mes_periodo_validado + "\t"; //CC4U1029PERCOTIZSALUD
+								outputText = outputText + pagoInfo.mes_periodo_validado + "\t"; //CC4U1029PERCOTIZSALUD
 								outputText = outputText + "NULL" + "\t"; //CC4U1029DESCTIPOPLANTILLA
 								outputText =
 									outputText +
 									aportanteInfo.numero_identificacion_aportante +
 									"\t"; //CC4U1027NUMDOCUMENTO
 								outputText = outputText + "NULL" + "\t"; //CC4U1027DESCCLASE
-								outputText = outputText + pagosInfo.length + "\t"; //CC4U1029CANTIDADCOTIZ
+								outputText = outputText +aportanteInfo.resultado_pagos.length + "\t"; //CC4U1029CANTIDADCOTIZ
 								outputText =
 									outputText +
 									aportanteInfo.tipo_identificacion_aportante_id +
