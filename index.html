@@ -7,28 +7,59 @@
 		<title>Document</title>
 	</head>
 	<body>
-		<h1>Selecciona un JSON válido</h1>
-		<input type="file" id="fileInput" />
-		<script>
-			const upload= document.getElementById("fileInput");
-			if (upload) {
-				upload.addEventListener("change", function () {
-					// Make sure a file was selected
-					if (upload.files.length > 0) {
-						var reader = new FileReader(); // File reader to read the file
+		<div id="container">
+			<input type="file" name="inputfile" id="inputfile" accept="JSON" />
+			<br />
 
-						// This event listener will happen when the reader has read the file
-						reader.addEventListener("load", function () {
-							var result = JSON.parse(reader.result); // Parse the result into an object
+			<pre id="output"></pre>
+		</div>
 
-							console.log(result);
+		<script type="text/javascript">
+			let outputText = [];
+			document
+				.getElementById("inputfile")
+				.addEventListener("change", function () {
+					const fr = new FileReader();
+					fr.onload = function () {
+						const transactionInfo = JSON.parse(fr.result);
 
+						const aportantes = transactionInfo.aportantes;
+						aportantes.forEach((aportanteInfo) => {
+							const pagos = aportanteInfo.resultado_pagos;
+							pagos.forEach((pagosInfo) => {
+								outputText.push({
+                  numero_identificacion_persona_natural:transactionInfo.numero_identificacion_persona_natural,
+									consulta_id: transactionInfo.consulta_id,
+                  primer_nombre_persona_natural:transactionInfo.primer_nombre_persona_natural,
+
+                  media_ingresos:aportanteInfo.media_ingresos,
+                  tipo_identificacion_aportante_id:aportanteInfo.tipo_identificacion_aportante_id,
+                  numero_identificacion_aportante:aportanteInfo.numero_identificacion_aportante,
+                  razón_social_aportante:aportanteInfo.razón_social_aportante,
+                  
+									prediodo_cotizacion:pagosInfo.ano_periodo_validado+"-"+pagosInfo.mes_periodo_validado,
+
+								}) ;
+							});
 						});
 
-						reader.readAsText(upload.files[0]); // Read the uploaded file
-					}
+						var data =
+							"text/json;charset=utf-8," +
+							encodeURIComponent(JSON.stringify(outputText));
+
+						var a = document.createElement("a");
+						a.href = "data:" + data;
+						a.download = "data.json";
+						a.innerHTML = "download JSON";
+
+						var container = document.getElementById("container");
+						container.appendChild(a);
+
+						document.getElementById("output").innerText =
+							JSON.stringify(outputText);
+					};
+					fr.readAsText(this.files[0]);
 				});
-			}
 		</script>
 	</body>
 </html>
