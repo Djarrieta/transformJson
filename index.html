@@ -10,53 +10,151 @@
 		<div id="container">
 			<input type="file" name="inputfile" id="inputfile" accept="JSON" />
 			<br />
-
-			<pre id="output"></pre>
 		</div>
 
 		<script type="text/javascript">
-			let outputText = [];
+			let outputText = "";
+			outputText = outputText + "IDCLIENTE" + "\t";
+			outputText = outputText + "flu_numsolicitud" + "\t";
+			outputText = outputText + "PrimerApellido" + "\t";
+			outputText = outputText + "BaseSalud " + "\t";
+
+			outputText = outputText + "CodigoTipo_Aportante " + "\t";
+			outputText = outputText + "NumDocumentoAportante " + "\t";
+			outputText = outputText + "DescTipo_Cotizante " + "\t";
+			outputText = outputText + "CodigoTipo " + "\t";
+			outputText = outputText + "RazonSocialAportante " + "\t";
+			outputText = outputText + "PrimerApellidoSOI " + "\t";
+			outputText = outputText + "Novedades" + "\t";
+			outputText = outputText + "PeriodoCotizacion " + "\t";
+			outputText = outputText + "BaseCajaCompensa " + "\t";
+			outputText = outputText + "CodigoTipo_Cotizante " + "\t";
+			outputText = outputText + "CodigoTipo_Cotizante " + "\t";
+
+			outputText = outputText + "BasePension " + "\t";
+			outputText = outputText + "DescTipo " + "\t";
+			outputText = outputText + "SalarioBasico" + "\t";
+			outputText = outputText + "DescTipo_Aportante" + "\t";
+			outputText = outputText + "DescClase" + "\t";
+			outputText = outputText + "CodClase" + "\t";
+			outputText = outputText + "CC4U1029TOTALPAGADO" + "\t";
+			outputText = outputText + "CC4U1027DESCTIPO" + "\t";
+			outputText = outputText + "CC4U1029PERCOTIZSALUD" + "\t";
+			outputText = outputText + "CC4U1029DESCTIPOPLANTILLA" + "\t";
+			outputText = outputText + "CC4U1027NUMDOCUMENTO" + "\t";
+			outputText = outputText + "CC4U1027DESCCLASE" + "\t";
+			outputText = outputText + "CC4U1029CANTIDADCOTIZ" + "\t";
+			outputText = outputText + "CC4U1027TIPODOCUMENTO" + "\t";
+			outputText = outputText + "CC4U1027RAZONSOCIAL" + "\t";
+			outputText = outputText + "CC4U1027CODTIPO" + "\t";
+			outputText = outputText + "CC4U1029TIPOPLANTILLA" + "\t";
+			outputText = outputText + "CC4U1027DESCACTECONOMICA" + "\t";
+			outputText = outputText + "CC4U1027CODCLASE" + "\t";
+			outputText = outputText + "CC4U1029PERCOTIZOTROSUBSIS" + "\t";
+			outputText = outputText + "CC4U1027ACTIVECONOMICA" + "\t";
+			outputText = outputText + "\n";
+
 			document
 				.getElementById("inputfile")
 				.addEventListener("change", function () {
 					const fr = new FileReader();
 					fr.onload = function () {
 						const transactionInfo = JSON.parse(fr.result);
-
 						const aportantes = transactionInfo.aportantes;
 						aportantes.forEach((aportanteInfo) => {
 							const pagos = aportanteInfo.resultado_pagos;
 							pagos.forEach((pagosInfo) => {
-								outputText.push({
-                  numero_identificacion_persona_natural:transactionInfo.numero_identificacion_persona_natural,
-									consulta_id: transactionInfo.consulta_id,
-                  primer_nombre_persona_natural:transactionInfo.primer_nombre_persona_natural,
+								outputText =
+									outputText +
+									transactionInfo.numero_identificacion_persona_natural +
+									"\t"; //IDCLIENTE
+								outputText = outputText + transactionInfo.consulta_id + "\t"; //flu_numsolicitud
+								outputText =
+									outputText +
+									transactionInfo.primer_nombre_persona_natural +
+									"\t"; //PrimerApellido
+								outputText = outputText + transactionInfo.EPS + "\t"; //BaseSalud
 
-                  media_ingresos:aportanteInfo.media_ingresos,
-                  tipo_identificacion_aportante_id:aportanteInfo.tipo_identificacion_aportante_id,
-                  numero_identificacion_aportante:aportanteInfo.numero_identificacion_aportante,
-                  razón_social_aportante:aportanteInfo.razón_social_aportante,
-                  
-									prediodo_cotizacion:pagosInfo.ano_periodo_validado+"-"+pagosInfo.mes_periodo_validado,
+								outputText =
+									outputText +
+									aportanteInfo.tipo_identificacion_aportante_id +
+									"\t"; //CodigoTipo_Aportante
+								outputText =
+									outputText +
+									aportanteInfo.numero_identificacion_aportante +
+									"\t"; //NumDocumentoAportante
+								outputText =
+									outputText +
+									aportanteInfo.tipo_cotizante_persona_natural +
+									"\t"; //DescTipo_Cotizante
+								outputText =
+									outputText +
+									aportanteInfo.tipo_cotizante_persona_natural +
+									"\t"; //CodigoTipo
+								outputText =
+									outputText + aportanteInfo.razón_social_aportante + "\t"; //RazonSocialAportante
+								outputText =
+									outputText +
+									transactionInfo.primer_nombre_persona_natural +
+									"\t"; //PrimerApellidoSOI
+								outputText =
+									outputText +
+									aportanteInfo.tiene_novedad_ingreso_actualmente +
+									"\t"; //Novedades
+								outputText = outputText + pagosInfo.mes_periodo_validado + "\t"; //PeriodoCotizacion
+								outputText = outputText + "NULL" + "\t"; //BaseCajaCompensa
+								outputText =
+									outputText +
+									aportanteInfo.tipo_cotizante_persona_natural +
+									"\t"; //CodigoTipo_Cotizante
+								outputText =
+									outputText +
+									aportanteInfo.tipo_cotizante_persona_natural +
+									"\t"; //CodigoTipo_Cotizante
 
-								}) ;
+								outputText = outputText + pagosInfo.promedio_ingresos + "\t"; //BasePension
+								outputText = outputText + "NULL" + "\t"; //DescTipo
+								outputText = outputText + pagosInfo.mes_periodo_validado + "\t"; //SalarioBasico
+								outputText = outputText + "NULL" + "\t"; //DescTipo_Aportante
+								outputText = outputText + "NULL" + "\t"; //DescClase
+								outputText = outputText + "NULL" + "\t"; //CodClase
+								outputText = outputText + pagosInfo.ingresos + "\t"; //CC4U1029TOTALPAGADO
+								outputText = outputText + "NULL" + "\t"; //CC4U1027DESCTIPO
+								outputText = outputText + pagosInfo.mes_periodo_validado + "\t"; //CC4U1029PERCOTIZSALUD
+								outputText = outputText + "NULL" + "\t"; //CC4U1029DESCTIPOPLANTILLA
+								outputText =
+									outputText +
+									aportanteInfo.numero_identificacion_aportante +
+									"\t"; //CC4U1027NUMDOCUMENTO
+								outputText = outputText + "NULL" + "\t"; //CC4U1027DESCCLASE
+								outputText = outputText + pagosInfo.length + "\t"; //CC4U1029CANTIDADCOTIZ
+								outputText =
+									outputText +
+									aportanteInfo.tipo_identificacion_aportante_id +
+									"\t"; //CC4U1027TIPODOCUMENTO
+								outputText =
+									outputText + aportanteInfo.razón_social_aportante + "\t"; //CC4U1027RAZONSOCIAL
+								outputText = outputText + "NULL" + "\t"; //CC4U1027CODTIPO
+								outputText = outputText + "NULL" + "\t"; //CC4U1029TIPOPLANTILLA
+								outputText = outputText + "NULL" + "\t"; //CC4U1027DESCACTECONOMICA
+								outputText = outputText + "NULL" + "\t"; //CC4U1027CODCLASE
+								outputText = outputText + "NULL" + "\t"; //CC4U1029PERCOTIZOTROSUBSIS
+								outputText = outputText + "NULL" + "\t"; //CC4U1027ACTIVECONOMICA
+
+								outputText = outputText + "\n";
 							});
 						});
 
-						var data =
+						const a = document.createElement("a");
+						a.href =
+							"data:" +
 							"text/json;charset=utf-8," +
-							encodeURIComponent(JSON.stringify(outputText));
-
-						var a = document.createElement("a");
-						a.href = "data:" + data;
-						a.download = "data.json";
-						a.innerHTML = "download JSON";
+							encodeURIComponent(outputText);
+						a.download = "data.txt";
+						a.innerHTML = "Descargar archivo modificado";
 
 						var container = document.getElementById("container");
 						container.appendChild(a);
-
-						document.getElementById("output").innerText =
-							JSON.stringify(outputText);
 					};
 					fr.readAsText(this.files[0]);
 				});
