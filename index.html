@@ -8,8 +8,34 @@
 	</head>
 	<body>
 		<div id="container">
+			<h1>Instrucciones</h1>
+			<ol>
+				<li>
+					<span
+						>Consula las transaccione que quieres modificar, puede ser por
+						ejemplo con la siguiente consulta, donde se buscan 10 transacciones que tengan los campos response_macia y codeCredit:</span
+					>
+					<p>
+						db.transactionmodels.find({$and: [{"response_macia.aportantes":
+						{$exists: true}},{codeCredit:{$exists: true}}]},{response_macia:1,
+						codeCredit:1}) .sort({ codeCredit:-1 }) .limit(10)
+					</p>
+          <p>Para mejorar velocidad de procesamiento en la consulta, solo se cargan los campos deseados, que son response_macia y codeCredit.</p>
+				</li>
+        <li>
+          Exporta a txt o json y guarda el archivo en tu pc o celular, las transacciones deben tener como mínimo, los campos "response_macia" y "codeCredit".
+        </li>
+        <li>
+          El json con todas las transacciones deben tener el formato correcto, empezar y finalizar con corchetes [] y estar separadas por comas.
+        </li>
+        <li>
+          pulsar el botón para seleccionar archivo y selecciona el json.
+        </li>
+        <li>
+          Descarga el archivo modificado, tendrá el formato deseado y está separado por tabulaciones, por lo que puede ser visualizado en excel.
+        </li>
+			</ol>
 			<input type="file" name="inputfile" id="inputfile" accept="JSON" />
-			<br />
 		</div>
 
 		<script type="text/javascript">
@@ -94,95 +120,111 @@
 				.addEventListener("change", function () {
 					const fr = new FileReader();
 					fr.onload = function () {
-						const transactionInfo = JSON.parse(fr.result);
-						const aportantes = transactionInfo.aportantes;
-						aportantes.forEach((aportanteInfo) => {
-							const pagos = aportanteInfo.resultado_pagos;
-							pagos.forEach((pagoInfo) => {
-								outputText =
-									outputText +
-									transactionInfo.numero_identificacion_persona_natural +
-									"\t"; //IDCLIENTE
-								outputText = outputText + transactionInfo.consulta_id + "\t"; //flu_numsolicitud
-								outputText =
-									outputText +
-									transactionInfo.primer_nombre_persona_natural +
-									"\t"; //PrimerApellido
-								outputText = outputText + transactionInfo.EPS + "\t"; //BaseSalud
+						const transactions = JSON.parse(fr.result.toString()); //array de transactions
 
-								outputText =
-									outputText +
-									aportanteInfo.tipo_identificacion_aportante_id +
-									"\t"; //CodigoTipo_Aportante
-								outputText =
-									outputText +
-									aportanteInfo.numero_identificacion_aportante +
-									"\t"; //NumDocumentoAportante
-								outputText =
-									outputText +
-									aportanteInfo.tipo_cotizante_persona_natural +
-									"\t"; //DescTipo_Cotizante
-								outputText =
-									outputText +
-									aportanteInfo.tipo_cotizante_persona_natural +
-									"\t"; //CodigoTipo
-								outputText =
-									outputText + aportanteInfo.razón_social_aportante + "\t"; //RazonSocialAportante
-								outputText =
-									outputText +
-									transactionInfo.primer_nombre_persona_natural +
-									"\t"; //PrimerApellidoSOI
-								outputText =
-									outputText +
-									aportanteInfo.tiene_novedad_ingreso_actualmente +
-									"\t"; //Novedades
-								outputText = outputText + pagoInfo.mes_periodo_validado + "\t"; //PeriodoCotizacion
-								outputText = outputText + "NULL" + "\t"; //BaseCajaCompensa
-								outputText =
-									outputText +
-									aportanteInfo.tipo_cotizante_persona_natural +
-									"\t"; //CodigoTipo_Cotizante
-								outputText =
-									outputText +
-									aportanteInfo.tipo_cotizante_persona_natural +
-									"\t"; //CodigoTipo_Cotizante
+						transactions.forEach((transactionInfo) => {
+							const aportantes = transactionInfo.response_macia.aportantes;
+							aportantes.forEach((aportanteInfo) => {
+								const pagos = aportanteInfo.resultado_pagos;
+								pagos.forEach((pagoInfo) => {
+									let ingresos;
+									if (pagoInfo.ingresos) {
+										ingresos = pagoInfo.ingresos;
+									} else {
+										ingresos = 0;
+									}
 
-								outputText = outputText + aportanteInfo.promedio_ingresos + "\t"; //BasePension
-								outputText = outputText + "NULL" + "\t"; //DescTipo
-								outputText = outputText + pagoInfo.mes_periodo_validado + "\t"; //SalarioBasico
-								outputText = outputText + "NULL" + "\t"; //DescTipo_Aportante
-								outputText = outputText + "NULL" + "\t"; //DescClase
-								outputText = outputText + "NULL" + "\t"; //CodClase
-                if(pagoInfo.ingresos){
-                  outputText = outputText + pagoInfo.ingresos  + "\t"; //CC4U1029TOTALPAGADO
-                }else{
-                  outputText = outputText + "0"  + "\t"; //CC4U1029TOTALPAGADO
-                }
+									outputText =
+										outputText +
+										transactionInfo.response_macia
+											.numero_identificacion_persona_natural +
+										"\t"; //IDCLIENTE
+									outputText = outputText + transactionInfo.codeCredit + "\t"; //flu_numsolicitud
+									outputText =
+										outputText +
+										transactionInfo.response_macia
+											.primer_nombre_persona_natural +
+										"\t"; //PrimerApellido
+									outputText =
+										outputText + transactionInfo.response_macia.EPS + "\t"; //BaseSalud
 
-								
-								outputText = outputText + "NULL" + "\t"; //CC4U1027DESCTIPO
-								outputText = outputText + pagoInfo.mes_periodo_validado + "\t"; //CC4U1029PERCOTIZSALUD
-								outputText = outputText + "NULL" + "\t"; //CC4U1029DESCTIPOPLANTILLA
-								outputText =
-									outputText +
-									aportanteInfo.numero_identificacion_aportante +
-									"\t"; //CC4U1027NUMDOCUMENTO
-								outputText = outputText + "NULL" + "\t"; //CC4U1027DESCCLASE
-								outputText = outputText +aportanteInfo.resultado_pagos.length + "\t"; //CC4U1029CANTIDADCOTIZ
-								outputText =
-									outputText +
-									aportanteInfo.tipo_identificacion_aportante_id +
-									"\t"; //CC4U1027TIPODOCUMENTO
-								outputText =
-									outputText + aportanteInfo.razón_social_aportante + "\t"; //CC4U1027RAZONSOCIAL
-								outputText = outputText + "NULL" + "\t"; //CC4U1027CODTIPO
-								outputText = outputText + "NULL" + "\t"; //CC4U1029TIPOPLANTILLA
-								outputText = outputText + "NULL" + "\t"; //CC4U1027DESCACTECONOMICA
-								outputText = outputText + "NULL" + "\t"; //CC4U1027CODCLASE
-								outputText = outputText + "NULL" + "\t"; //CC4U1029PERCOTIZOTROSUBSIS
-								outputText = outputText + "NULL" + "\t"; //CC4U1027ACTIVECONOMICA
+									outputText =
+										outputText +
+										aportanteInfo.tipo_identificacion_aportante_id +
+										"\t"; //CodigoTipo_Aportante
+									outputText =
+										outputText +
+										aportanteInfo.numero_identificacion_aportante +
+										"\t"; //NumDocumentoAportante
+									outputText =
+										outputText +
+										aportanteInfo.tipo_cotizante_persona_natural +
+										"\t"; //DescTipo_Cotizante
+									outputText =
+										outputText +
+										aportanteInfo.tipo_cotizante_persona_natural +
+										"\t"; //CodigoTipo
+									outputText =
+										outputText + aportanteInfo.razón_social_aportante + "\t"; //RazonSocialAportante
+									outputText =
+										outputText +
+										transactionInfo.response_macia
+											.primer_nombre_persona_natural +
+										"\t"; //PrimerApellidoSOI
+									if (aportanteInfo.tiene_novedad_ingreso_actualmente) {
+										outputText =
+											outputText +
+											aportanteInfo.tiene_novedad_ingreso_actualmente +
+											"\t"; //Novedades
+									} else {
+										outputText = outputText + false + "\t"; //Novedades
+									}
+									outputText =
+										outputText + pagoInfo.mes_periodo_validado + "\t"; //PeriodoCotizacion
+									outputText = outputText + "NULL" + "\t"; //BaseCajaCompensa
+									outputText =
+										outputText +
+										aportanteInfo.tipo_cotizante_persona_natural +
+										"\t"; //CodigoTipo_Cotizante
+									outputText =
+										outputText +
+										aportanteInfo.tipo_cotizante_persona_natural +
+										"\t"; //CodigoTipo_Cotizante
 
-								outputText = outputText + "\n";
+									outputText = outputText + ingresos + "\t"; //BasePension
+									outputText = outputText + "NULL" + "\t"; //DescTipo
+									outputText = outputText + ingresos + "\t"; //SalarioBasico
+									outputText = outputText + "NULL" + "\t"; //DescTipo_Aportante
+									outputText = outputText + "NULL" + "\t"; //DescClase
+									outputText = outputText + "NULL" + "\t"; //CodClase
+									outputText = outputText + ingresos + "\t"; //CC4U1029TOTALPAGADO
+
+									outputText = outputText + "NULL" + "\t"; //CC4U1027DESCTIPO
+									outputText =
+										outputText + pagoInfo.mes_periodo_validado + "\t"; //CC4U1029PERCOTIZSALUD
+									outputText = outputText + "NULL" + "\t"; //CC4U1029DESCTIPOPLANTILLA
+									outputText =
+										outputText +
+										aportanteInfo.numero_identificacion_aportante +
+										"\t"; //CC4U1027NUMDOCUMENTO
+									outputText = outputText + "NULL" + "\t"; //CC4U1027DESCCLASE
+									outputText =
+										outputText + aportanteInfo.resultado_pagos.length + "\t"; //CC4U1029CANTIDADCOTIZ
+									outputText =
+										outputText +
+										aportanteInfo.tipo_identificacion_aportante_id +
+										"\t"; //CC4U1027TIPODOCUMENTO
+									outputText =
+										outputText + aportanteInfo.razón_social_aportante + "\t"; //CC4U1027RAZONSOCIAL
+									outputText = outputText + "NULL" + "\t"; //CC4U1027CODTIPO
+									outputText = outputText + "NULL" + "\t"; //CC4U1029TIPOPLANTILLA
+									outputText = outputText + "NULL" + "\t"; //CC4U1027DESCACTECONOMICA
+									outputText = outputText + "NULL" + "\t"; //CC4U1027CODCLASE
+									outputText = outputText + "NULL" + "\t"; //CC4U1029PERCOTIZOTROSUBSIS
+									outputText = outputText + "NULL" + "\t"; //CC4U1027ACTIVECONOMICA
+
+									outputText = outputText + "\n";
+								});
 							});
 						});
 
